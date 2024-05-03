@@ -1,7 +1,5 @@
 package org.israelgda.model
 
-import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion
-import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 
 @Entity
@@ -9,7 +7,7 @@ import jakarta.persistence.*
 class User(
     name: String,
     age: Int
-): PanacheEntityBase {
+) {
 
     constructor(): this("", 0)
 
@@ -20,7 +18,5 @@ class User(
     var name: String = name
 
     var age: Int = age
-
-    companion object: PanacheCompanion<User>
 
 }
