@@ -2,9 +2,11 @@ package org.israelgda.resources
 
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
+import jakarta.validation.Validator
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
+import org.israelgda.dto.ResponseError
 import org.israelgda.dto.UserDTO
 import org.israelgda.services.UserService
 
@@ -15,6 +17,9 @@ class UserResource {
 
     @Inject
     lateinit var userService: UserService
+
+    @Inject
+    lateinit var validator: Validator
 
     @GET
     @Path("{id}")
@@ -34,6 +39,13 @@ class UserResource {
     @POST
     @Transactional
     fun create(userDto: UserDTO): Response {
+        val violations = validator.validate(userDto)
+
+        if(violations.isNotEmpty()) {
+            val responseError = ResponseError.createFromValidation(violations)
+            return Response.status(400).entity(responseError).build()
+        }
+
         val userCreated = userService.create(userDto)
 
         return Response.ok(userCreated).build()
@@ -43,6 +55,13 @@ class UserResource {
     @Path("{id}")
     @Transactional
     fun update(@PathParam("id") id: Long, userDto: UserDTO): Response {
+        val violations = validator.validate(userDto)
+
+        if(violations.isNotEmpty()) {
+            val responseError = ResponseError.createFromValidation(violations)
+            return Response.status(400).entity(responseError).build()
+        }
+
         val userUpdated = userService.update(id, userDto)
 
         return Response.ok(userUpdated).build()
