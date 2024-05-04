@@ -7,6 +7,7 @@ import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.israelgda.dto.ResponseError
+import org.israelgda.dto.ResponseError.Companion.UNPROCESSABLE_ENTITY_STATUS
 import org.israelgda.dto.UserDTO
 import org.israelgda.services.UserService
 
@@ -41,14 +42,13 @@ class UserResource {
     fun create(userDto: UserDTO): Response {
         val violations = validator.validate(userDto)
 
-        if(violations.isNotEmpty()) {
-            val responseError = ResponseError.createFromValidation(violations)
-            return Response.status(400).entity(responseError).build()
-        }
+        if(violations.isNotEmpty())
+            return ResponseError
+                .createFromValidation(violations)
+                .withStatusCode(UNPROCESSABLE_ENTITY_STATUS)
 
         val userCreated = userService.create(userDto)
-
-        return Response.ok(userCreated).build()
+        return Response.status(201).entity(userCreated).build()
     }
 
     @PUT
@@ -57,14 +57,13 @@ class UserResource {
     fun update(@PathParam("id") id: Long, userDto: UserDTO): Response {
         val violations = validator.validate(userDto)
 
-        if(violations.isNotEmpty()) {
-            val responseError = ResponseError.createFromValidation(violations)
-            return Response.status(400).entity(responseError).build()
-        }
+        if(violations.isNotEmpty())
+            return ResponseError
+                .createFromValidation(violations)
+                .withStatusCode(UNPROCESSABLE_ENTITY_STATUS)
 
         val userUpdated = userService.update(id, userDto)
-
-        return Response.ok(userUpdated).build()
+        return Response.noContent().build()
     }
 
     @DELETE
