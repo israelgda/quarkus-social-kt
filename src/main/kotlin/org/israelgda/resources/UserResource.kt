@@ -62,7 +62,7 @@ class UserResource {
                 .createFromValidation(violations)
                 .withStatusCode(UNPROCESSABLE_ENTITY_STATUS)
 
-        val userUpdated = userService.update(id, userDto)
+        userService.update(id, userDto)
         return Response.noContent().build()
     }
 
