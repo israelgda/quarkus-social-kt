@@ -15,8 +15,7 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-    var name: String = name
-
-    var age: Int = age
+    var name = name
+    var age = age
 
 }

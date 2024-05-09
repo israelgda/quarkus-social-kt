@@ -9,12 +9,12 @@ class UserDTO(
     age: Int
 ) {
 
-    val id: Long = id
+    val id = id
 
     @NotBlank(message = "Name is required")
-    val name: String = name
+    val name = name
 
     @NotNull(message = "Age is required")
-    val age: Int = age
+    val age = age
 
 }
