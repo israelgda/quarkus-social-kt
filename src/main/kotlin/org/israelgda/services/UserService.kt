@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional
 import org.israelgda.dto.UserDTO
 import org.israelgda.model.User
 import org.israelgda.repositories.UserRepository
+import org.israelgda.utils.toDTO
+import org.israelgda.utils.toEntity
 
 @ApplicationScoped
 class UserService {
@@ -14,22 +16,19 @@ class UserService {
     lateinit var userRepository: UserRepository
 
     fun findById(id: Long): UserDTO {
-
-        return userRepository.findById(id)
-            ?.let { entityToDTO(it) }
-            ?: throw RuntimeException("Entity User not found for id: $id")
+        return userRepository.findById(id)?.toDTO()?: throw RuntimeException("Entity User not found for id: $id")
     }
 
     fun getAll(): List<UserDTO> {
-        return userRepository.findAll().list().map { entityToDTO(it) }
+        return userRepository.findAll().list().map { it.toDTO() }
     }
 
     @Transactional
     fun create(user: UserDTO): UserDTO {
-        val userEntity = dtoToEntity(user)
+        val userEntity = user.toEntity()
         userRepository.persist(userEntity)
 
-        return entityToDTO(userEntity)
+        return userEntity.toDTO()
     }
 
     @Transactional
@@ -38,7 +37,7 @@ class UserService {
 
         if(userEntity != null) {
             val userUpdated = updateEntity(userEntity, userDto)
-            return entityToDTO(userUpdated)
+            return userUpdated.toDTO()
         } else {
              throw RuntimeException("Entity User not found for id: $id")
         }
@@ -57,7 +56,4 @@ class UserService {
             ?: throw RuntimeException("Entity User not found for id: $id")
     }
 
-    private fun entityToDTO(user: User) = UserDTO(user.id, user.name, user.age)
-
-    private fun dtoToEntity(user: UserDTO) = User(user.name, user.age)
 }

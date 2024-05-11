@@ -4,10 +4,10 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.israelgda.dto.PostDTO
-import org.israelgda.model.Post
-import org.israelgda.model.User
 import org.israelgda.repositories.PostRepository
 import org.israelgda.repositories.UserRepository
+import org.israelgda.utils.toDTO
+import org.israelgda.utils.toEntity
 
 @ApplicationScoped
 class PostService {
@@ -24,7 +24,7 @@ class PostService {
             ?.let { userEntity ->
                 postRepository.find("user", userEntity)
                     .list()
-                    .map { entityToDTO(it) }
+                    .map { it.toDTO() }
             } ?: throw RuntimeException("Entity User not found for id: $userId")
     }
 
@@ -33,18 +33,13 @@ class PostService {
         val userEntity = userRepository.findById(userId)
 
         if(userEntity != null) {
-            val postEntity = dtoToEntity(userEntity, postDTO)
+            val postEntity = postDTO.toEntity(userEntity)
             postRepository.persist(postEntity)
 
-            return entityToDTO(postEntity)
+            return postEntity.toDTO()
         } else {
             throw RuntimeException("Entity User not found for id: $userId")
         }
     }
-
-    private fun entityToDTO(post: Post) = PostDTO(post.post, post.postdate)
-
-    private fun dtoToEntity(user: User, postDTO: PostDTO) = Post(postDTO.post, user)
-
 
 }
