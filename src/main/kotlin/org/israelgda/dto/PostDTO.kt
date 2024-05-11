@@ -5,7 +5,7 @@ import java.time.Instant
 
 class PostDTO (
     postText: String,
-    postDate: Instant
+    postDate: Instant?
 ) {
 
     @NotBlank(message = "Post text is required")
