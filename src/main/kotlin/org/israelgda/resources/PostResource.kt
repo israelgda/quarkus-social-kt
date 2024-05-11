@@ -28,6 +28,6 @@ class PostResource {
     fun create(@PathParam("userId") userId: Long, postDTO: PostDTO): Response {
         val postCreated = postService.create(userId, postDTO)
 
-        return Response.status(201).build()
+        return Response.status(201).entity(postCreated).build()
     }
 }

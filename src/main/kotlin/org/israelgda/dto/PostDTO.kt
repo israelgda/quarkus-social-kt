@@ -4,12 +4,12 @@ import jakarta.validation.constraints.NotBlank
 import java.time.Instant
 
 class PostDTO (
-    post: String,
-    postdate: Instant
+    postText: String,
+    postDate: Instant
 ) {
 
     @NotBlank(message = "Post text is required")
-    val post = post
+    val postText = postText
 
-    val postdate = postdate
+    val postDate = postDate
 }

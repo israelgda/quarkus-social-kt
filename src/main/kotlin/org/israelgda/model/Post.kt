@@ -6,7 +6,7 @@ import java.time.Instant
 @Entity
 @Table(name = "posts")
 class Post (
-    post: String,
+    postText: String,
     user: User
 ) {
 
@@ -16,10 +16,18 @@ class Post (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-    var post: String = post
-    var postdate: Instant = Instant.now()
+    @Column(name = "post_text")
+    var postText: String = postText
+
+    @Column(name = "post_date")
+    lateinit var postDate: Instant
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     var user: User = user
+
+    @PrePersist
+    fun insertPostDate(){
+        postDate = Instant.now()
+    }
 }
