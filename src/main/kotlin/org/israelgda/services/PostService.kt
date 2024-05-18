@@ -42,4 +42,17 @@ class PostService {
         }
     }
 
+    fun findById(postId: Long): PostDTO {
+        return postRepository.findById(postId)
+            ?.toDTO()
+            ?: throw RuntimeException("Entity Post not found por id: $postId")
+    }
+
+    @Transactional
+    fun deleteById(postId: Long) {
+        postRepository.findById(postId)
+            ?.let { postRepository.deleteById(postId) }
+            ?: throw RuntimeException("Entity Post not found por id: $postId")
+    }
+
 }

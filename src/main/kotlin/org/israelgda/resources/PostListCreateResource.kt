@@ -11,7 +11,7 @@ import org.israelgda.services.PostService
 @Path("/users/{userId}/posts")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-class PostResource {
+class PostListCreateResource {
 
     @Inject
     lateinit var postService: PostService

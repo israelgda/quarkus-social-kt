@@ -16,7 +16,9 @@ class UserService {
     lateinit var userRepository: UserRepository
 
     fun findById(id: Long): UserDTO {
-        return userRepository.findById(id)?.toDTO()?: throw RuntimeException("Entity User not found for id: $id")
+        return userRepository.findById(id)
+            ?.toDTO()
+            ?: throw RuntimeException("Entity User not found for id: $id")
     }
 
     fun getAll(): List<UserDTO> {
