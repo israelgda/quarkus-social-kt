@@ -3,11 +3,13 @@ package org.israelgda.resources
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import jakarta.ws.rs.Consumes
+import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
 import jakarta.ws.rs.PUT
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
+import jakarta.ws.rs.QueryParam
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.israelgda.dto.FollowerRequest
@@ -36,5 +38,12 @@ class FollowerResource {
             Response.status(Response.Status.CONFLICT).build()
         else
             Response.noContent().build()
+    }
+
+    @DELETE
+    @Transactional
+    fun unfollow(@PathParam("userId") userId: Long, @QueryParam("unfollow") toUnfollow: Long): Response {
+        followerService.unfollowByUsersIds(userId, toUnfollow)
+        return Response.noContent().build()
     }
 }

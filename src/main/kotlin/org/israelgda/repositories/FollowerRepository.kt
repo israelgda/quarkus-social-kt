@@ -24,4 +24,15 @@ class FollowerRepository: PanacheRepository<Follower>{
     fun findByUserId(userId: Long): List<Follower> {
         return find("user.id", userId).list()
     }
+
+    fun deleteByUserAndFollower(user: User, userToUnfollow: User) {
+        val params = Parameters
+            .with("user", user)
+            .and("follower", userToUnfollow)
+            .map()
+
+        find("user =:user and follower =:follower ", params).firstResult()
+            ?.let { delete("user =:user and follower =:follower ", params) }
+            ?: throw RuntimeException("Invalid Follower ID ${userToUnfollow.id} for User ID: ${user.id}")
+    }
 }

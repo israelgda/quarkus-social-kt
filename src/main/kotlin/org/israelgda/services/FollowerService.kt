@@ -53,4 +53,14 @@ class FollowerService {
         return FollowersResponse(followersResponseList.size, followersDtoList)
     }
 
+    fun unfollowByUsersIds(userId: Long, toUnfollow: Long) {
+        val user = userRepository.findById(userId)
+            ?: throw RuntimeException("Entity User not found for id: $userId")
+
+        val userToUnfollow = userRepository.findById(toUnfollow)
+            ?: throw RuntimeException("Entity User not found for id: $toUnfollow")
+
+        followerRepository.deleteByUserAndFollower(user, userToUnfollow)
+    }
+
 }
