@@ -9,6 +9,6 @@ fun User.toDTO() = UserDTO(this.id, this.name, this.age)
 
 fun UserDTO.toEntity() = User(this.name, this.age)
 
-fun Post.toDTO() = PostDTO(this.postText, this.postDate)
+fun Post.toDTO() = PostDTO(this.postText, this.postDate, this.user.toDTO())
 
 fun PostDTO.toEntity(user: User) = Post(this.postText, user)
