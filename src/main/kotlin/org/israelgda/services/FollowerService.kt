@@ -1,5 +1,6 @@
 package org.israelgda.services
 
+import io.quarkus.panache.common.Parameters
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
@@ -7,6 +8,7 @@ import org.israelgda.dto.FollowerRequest
 import org.israelgda.dto.FollowersResponse
 import org.israelgda.dto.UserFollowerResponse
 import org.israelgda.model.Follower
+import org.israelgda.model.User
 import org.israelgda.repositories.FollowerRepository
 import org.israelgda.repositories.UserRepository
 
@@ -60,7 +62,20 @@ class FollowerService {
         val userToUnfollow = userRepository.findById(toUnfollow)
             ?: throw RuntimeException("Entity User not found for id: $toUnfollow")
 
-        followerRepository.deleteByUserAndFollower(user, userToUnfollow)
+        if(followerRepository.alreadyFollows(userToUnfollow, user))
+            followerRepository.deleteByUserAndFollower(user, userToUnfollow)
+        else
+            throw RuntimeException("Invalid Follower ID ${userToUnfollow.id} for User ID: ${user.id}")
+    }
+
+    fun alreadyFollows(followerId: Long, userId: Long): Boolean {
+        val user = userRepository.findById(userId)
+            ?: throw RuntimeException("Entity User not found for id: $userId")
+
+        val follower = userRepository.findById(followerId)
+            ?: throw RuntimeException("Entity User not found for id: $followerId")
+
+        return followerRepository.alreadyFollows(follower, user)
     }
 
 }

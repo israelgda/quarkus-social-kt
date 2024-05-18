@@ -31,8 +31,6 @@ class FollowerRepository: PanacheRepository<Follower>{
             .and("follower", userToUnfollow)
             .map()
 
-        find("user =:user and follower =:follower ", params).firstResult()
-            ?.let { delete("user =:user and follower =:follower ", params) }
-            ?: throw RuntimeException("Invalid Follower ID ${userToUnfollow.id} for User ID: ${user.id}")
+        delete("user =:user and follower =:follower ", params)
     }
 }
