@@ -5,14 +5,11 @@ import java.time.Instant
 
 class PostDTO (
     postText: String,
-    postDate: Instant?,
-    user: UserDTO
+    postDate: Instant?
 ) {
 
     @NotBlank(message = "Post text is required")
     val postText = postText
 
     val postDate = postDate
-
-    val user = user
 }
