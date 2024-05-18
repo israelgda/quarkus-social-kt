@@ -26,14 +26,12 @@ class UserResource {
     @Path("{id}")
     fun getById(@PathParam("id") id: Long): Response {
         val userEntity = userService.findById(id)
-
         return Response.ok(userEntity).build()
     }
 
     @GET
     fun getAll(): Response {
         val usersList = userService.getAll()
-
         return Response.ok(usersList).build()
     }
 

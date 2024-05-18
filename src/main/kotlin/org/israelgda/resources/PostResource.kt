@@ -30,4 +30,5 @@ class PostResource {
 
         return Response.status(201).entity(postCreated).build()
     }
+
 }
