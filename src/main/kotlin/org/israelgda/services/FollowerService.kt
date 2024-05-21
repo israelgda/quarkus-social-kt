@@ -9,6 +9,7 @@ import org.israelgda.dto.UserFollowerResponse
 import org.israelgda.model.Follower
 import org.israelgda.repositories.FollowerRepository
 import org.israelgda.repositories.UserRepository
+import org.israelgda.services.exceptions.ResourceNotFoundException
 
 @ApplicationScoped
 class FollowerService {
@@ -24,10 +25,10 @@ class FollowerService {
         val followerId = toFollow.followerId
 
         val userToFollow = userRepository.findById(userId)
-            ?: throw RuntimeException("Entity User not found for id: $userId")
+            ?: throw ResourceNotFoundException("Entity User not found for id: $userId")
 
         val userFollower = userRepository.findById(followerId)
-            ?: throw RuntimeException("Entity User not found for id: $followerId")
+            ?: throw ResourceNotFoundException("Entity User not found for id: $followerId")
 
         if (!followerRepository.alreadyFollows(userFollower, userToFollow)) {
             val follower = Follower(userToFollow, userFollower)
@@ -39,7 +40,7 @@ class FollowerService {
     fun getAllByUserId(userId: Long): FollowersResponse {
         val followersResponseList = userRepository.findById(userId)
             ?.let { followerRepository.findByUserId(userId) }
-            ?: throw RuntimeException("Entity User not found for id: $userId")
+            ?: throw ResourceNotFoundException("Entity User not found for id: $userId")
 
         val followersDtoList = followersResponseList.map { follower ->
             follower.let { user ->
@@ -55,23 +56,23 @@ class FollowerService {
 
     fun unfollowByUsersIds(userId: Long, toUnfollow: Long) {
         val user = userRepository.findById(userId)
-            ?: throw RuntimeException("Entity User not found for id: $userId")
+            ?: throw ResourceNotFoundException("Entity User not found for id: $userId")
 
         val userToUnfollow = userRepository.findById(toUnfollow)
-            ?: throw RuntimeException("Entity User not found for id: $toUnfollow")
+            ?: throw ResourceNotFoundException("Entity User not found for id: $toUnfollow")
 
         if(followerRepository.alreadyFollows(userToUnfollow, user))
             followerRepository.deleteByUserAndFollower(user, userToUnfollow)
         else
-            throw RuntimeException("Invalid Follower ID: ${userToUnfollow.id}, for User ID: ${user.id}")
+            throw ResourceNotFoundException("Invalid Follower ID: ${userToUnfollow.id}, for User ID: ${user.id}")
     }
 
     fun alreadyFollows(followerId: Long, userId: Long): Boolean {
         val user = userRepository.findById(userId)
-            ?: throw RuntimeException("Entity User not found for id: $userId")
+            ?: throw ResourceNotFoundException("Entity User not found for id: $userId")
 
         val follower = userRepository.findById(followerId)
-            ?: throw RuntimeException("Entity User not found for id: $followerId")
+            ?: throw ResourceNotFoundException("Entity User not found for id: $followerId")
 
         return followerRepository.alreadyFollows(follower, user)
     }

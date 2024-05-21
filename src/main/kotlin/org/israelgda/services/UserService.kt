@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional
 import org.israelgda.dto.UserDTO
 import org.israelgda.model.User
 import org.israelgda.repositories.UserRepository
+import org.israelgda.services.exceptions.ResourceNotFoundException
 import org.israelgda.utils.toDTO
 import org.israelgda.utils.toEntity
 
@@ -18,7 +19,7 @@ class UserService {
     fun findById(id: Long): UserDTO {
         return userRepository.findById(id)
             ?.toDTO()
-            ?: throw RuntimeException("Entity User not found for id: $id")
+            ?: throw ResourceNotFoundException("Entity User not found for id: $id")
     }
 
     fun getAll(): List<UserDTO> {
@@ -41,7 +42,7 @@ class UserService {
             val userUpdated = updateEntity(userEntity, userDto)
             return userUpdated.toDTO()
         } else {
-             throw RuntimeException("Entity User not found for id: $id")
+             throw ResourceNotFoundException("Entity User not found for id: $id")
         }
     }
 
@@ -55,7 +56,7 @@ class UserService {
     fun delete(id: Long) {
         userRepository.findById(id)
             ?.let { userRepository.deleteById(id) }
-            ?: throw RuntimeException("Entity User not found for id: $id")
+            ?: throw ResourceNotFoundException("Entity User not found for id: $id")
     }
 
 }

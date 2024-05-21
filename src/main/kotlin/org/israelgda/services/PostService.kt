@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional
 import org.israelgda.dto.PostDTO
 import org.israelgda.repositories.PostRepository
 import org.israelgda.repositories.UserRepository
+import org.israelgda.services.exceptions.ResourceNotFoundException
 import org.israelgda.utils.toDTO
 import org.israelgda.utils.toEntity
 
@@ -25,7 +26,7 @@ class PostService {
                 postRepository.find("user", userEntity)
                     .list()
                     .map { it.toDTO() }
-            } ?: throw RuntimeException("Entity User not found for id: $userId")
+            } ?: throw ResourceNotFoundException("Entity User not found for id: $userId")
     }
 
     @Transactional
@@ -38,21 +39,21 @@ class PostService {
 
             return postEntity.toDTO()
         } else {
-            throw RuntimeException("Entity User not found for id: $userId")
+            throw ResourceNotFoundException("Entity User not found for id: $userId")
         }
     }
 
     fun findById(postId: Long): PostDTO {
         return postRepository.findById(postId)
             ?.toDTO()
-            ?: throw RuntimeException("Entity Post not found por id: $postId")
+            ?: throw ResourceNotFoundException("Entity Post not found por id: $postId")
     }
 
     @Transactional
     fun deleteById(postId: Long) {
         postRepository.findById(postId)
             ?.let { postRepository.deleteById(postId) }
-            ?: throw RuntimeException("Entity Post not found por id: $postId")
+            ?: throw ResourceNotFoundException("Entity Post not found por id: $postId")
     }
 
 }
