@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotNull
 
 class UserDTO(
     id: Long,
-    name: String,
-    age: Int
+    name: String?,
+    age: Int?
 ) {
 
     val id = id

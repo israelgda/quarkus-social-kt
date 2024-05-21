@@ -1,6 +1,6 @@
-package org.israelgda.dto
+package org.israelgda.services.exceptions
 
-class FieldErrorsDto (
+class FieldErrorsObject (
     field: String,
     message: String
 ){

@@ -6,8 +6,8 @@ import jakarta.validation.Validator
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
-import org.israelgda.dto.ResponseError
-import org.israelgda.dto.ResponseError.Companion.UNPROCESSABLE_ENTITY_STATUS
+import org.israelgda.services.exceptions.ResponseError
+import org.israelgda.services.exceptions.ResponseError.Companion.UNPROCESSABLE_ENTITY_STATUS
 import org.israelgda.dto.UserDTO
 import org.israelgda.services.UserService
 

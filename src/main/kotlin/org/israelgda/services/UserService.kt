@@ -47,8 +47,8 @@ class UserService {
     }
 
     private fun updateEntity(userUpdated: User, userDto: UserDTO): User {
-        userUpdated.name = userDto.name
-        userUpdated.age = userDto.age
+        userUpdated.name = userDto.name!!
+        userUpdated.age = userDto.age!!
         return userUpdated
     }
 

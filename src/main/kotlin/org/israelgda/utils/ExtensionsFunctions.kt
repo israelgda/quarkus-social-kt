@@ -7,7 +7,7 @@ import org.israelgda.model.User
 
 fun User.toDTO() = UserDTO(this.id, this.name, this.age)
 
-fun UserDTO.toEntity() = User(this.name, this.age)
+fun UserDTO.toEntity() = User(this.name!!, this.age!!)
 
 fun Post.toDTO() = PostDTO(this.postText, this.postDate)
 
