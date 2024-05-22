@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank
 import java.time.Instant
 
 class PostDTO (
-    postText: String,
+    postText: String?,
     postDate: Instant?
 ) {
 
