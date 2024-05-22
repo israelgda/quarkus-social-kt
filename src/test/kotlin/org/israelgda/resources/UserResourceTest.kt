@@ -50,13 +50,13 @@ class UserResourceTest {
             .extract()
             .response()
 
-        assertEquals(SC_CREATED, response.statusCode, "O response code deveria ser 200")
+        assertEquals(SC_CREATED, response.statusCode, "O response code deveria ser 201")
         assertEquals("Fulano", response.jsonPath().getString("name"))
         assertEquals("20", response.jsonPath().getString("age"))
     }
 
     @Test
-    fun requestDeCriacaoDeUsuarioComDadosInvalidosRetornarResponse422EMensagemDeErro() {
+    fun requestDeCriacaoDeUsuarioComDadosInvalidosDeveRetornarResponse422EMensagemDeErro() {
         val userSemNome = UserDTO(0, null, 100)
 
         val responseErroSemNome =
