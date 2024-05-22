@@ -1,30 +1,21 @@
 package org.israelgda.resources
 
 import io.quarkus.test.InjectMock
-import io.quarkus.test.common.http.TestHTTPResource
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import jakarta.inject.Inject
-import org.apache.http.HttpStatus.*
+import org.apache.http.HttpStatus.SC_CREATED
+import org.apache.http.HttpStatus.SC_UNPROCESSABLE_ENTITY
 import org.hamcrest.Matchers
 import org.israelgda.dto.PostDTO
-import org.israelgda.dto.UserDTO
-import org.israelgda.model.Post
-import org.israelgda.model.User
 import org.israelgda.services.FollowerService
 import org.israelgda.services.PostService
 import org.israelgda.services.UserService
-import org.israelgda.services.exceptions.ResourceNotFoundException
-import org.israelgda.utils.toDTO
-import org.israelgda.utils.toEntity
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyLong
-import org.mockito.Mockito.*
-import java.net.URL
+import org.mockito.Mockito.`when`
 import java.time.Instant
 
 
@@ -42,15 +33,6 @@ class PostResourceTest {
 
     @InjectMock
     lateinit var followerService: FollowerService
-
-    lateinit var user: User
-    lateinit var userDto: UserDTO
-
-    @BeforeEach
-    fun setup(){
-        userDto = UserDTO(1L, "Fulano", 20)
-        user = userDto.toEntity()
-    }
 
     @Test
     fun requestDeCriacaoDePostDeveRetornarResponse201EBodyCriado() {
