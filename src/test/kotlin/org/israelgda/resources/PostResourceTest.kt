@@ -110,7 +110,6 @@ class PostResourceTest {
         `when`(followerService.alreadyFollows(anyLong(), anyLong()))
             .thenReturn(false)
 
-        val response =
             given()
                 .contentType(ContentType.JSON)
                 .header("followerId", 1L)
