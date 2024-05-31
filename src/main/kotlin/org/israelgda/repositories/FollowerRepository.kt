@@ -14,7 +14,7 @@ class FollowerRepository: PanacheRepository<Follower>{
             .with("follower", follower)
             .and("user", user)
             .map()
-        val query =  find("follower =:follower and user =: user", params)
+        val query =  find("follower =:follower and user =:user", params)
 
         return query.firstResult()
             ?.let { true }
